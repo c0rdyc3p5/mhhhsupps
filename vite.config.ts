@@ -8,6 +8,7 @@ export default defineConfig({
     hmr: false
   },
   build: {
-    outDir: 'docs'
+    outDir: 'docs',
+    assetsDir: '.'
   }
 })
