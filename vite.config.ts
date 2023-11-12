@@ -6,5 +6,8 @@ export default defineConfig({
   plugins: [preact()],
   server: {
     hmr: false
+  },
+  build: {
+    outDir: 'docs'
   }
 })
