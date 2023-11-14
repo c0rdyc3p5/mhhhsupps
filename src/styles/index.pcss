@@ -105,51 +105,67 @@ input {
   box-shadow: 6px 6px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
-.consumers-header {
-  scrollbar-gutter: stable;
+main {
 
-  > h6 {
-    border-bottom: 1px solid;
-    @apply border-gray;
-    font-size: 14px;
-    display: grid;
-    height: 100%;
-    place-content: center;
-
-    &:not(:first-child) {
-      border-left: 1px solid;
-      @apply border-gray;
-    }
-  }
 }
 
-.consumers-body {
-  border: 1px solid;
-  @apply border-dark;
+.consumers-table-wrapper {
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #4C4E49 #191919;
+    border: 1px solid;
+    @apply border-dark;
 
-  scrollbar-width: thin;
-  scrollbar-color: #4C4E49 #191919;
+    .consumers-table-inner {
+        width: max(688px, 100%);
 
-  > div {
-    @apply bg-gray;
+        .consumers-header {
+            scrollbar-gutter: stable;
 
-    &:not(:first-child) {
-      border-top: 1px solid;
-      @apply border-dark;
+            > h6 {
+                border-bottom: 1px solid;
+                @apply border-gray;
+                font-size: 14px;
+                display: grid;
+                height: 100%;
+                place-content: center;
+
+                &:not(:first-child) {
+                    border-left: 1px solid;
+                    @apply border-gray;
+                }
+            }
+        }
+
+        .consumers-body {
+            border-bottom: 1px solid;
+            @apply border-dark;
+
+            scrollbar-width: thin;
+            scrollbar-color: #4C4E49 #191919;
+
+            > div {
+                @apply bg-gray;
+
+                &:not(:first-child) {
+                    border-top: 1px solid;
+                    @apply border-dark;
+                }
+
+                > * {
+                    height: 100%;
+                    display: grid;
+                    place-content: center;
+                    font-size: 14px;
+
+                    &:not(:first-child) {
+                        border-left: 1px solid;
+                        @apply border-dark;
+                    }
+                }
+            }
+        }
     }
-
-    > * {
-      height: 100%;
-      display: grid;
-      place-content: center;
-      font-size: 14px;
-
-      &:not(:first-child) {
-        border-left: 1px solid;
-        @apply border-dark;
-      }
-    }
-  }
 }
 
 .calculation-type {
@@ -162,5 +178,9 @@ input {
     align-items: center;
     max-width: 600px;
     margin: 0 auto;
+
+      @media screen and (max-width: 768px) {
+        grid-template-columns: 1fr;
+      }
   }
 }

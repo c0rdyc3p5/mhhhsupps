@@ -108,7 +108,7 @@ export function App() {
   }, [consumerTableDataContainer, resultDataTableContainer])
 
   return (
-    <main class={'p-6 rounded bg-gray video-game-shadow max-w-[1024px] w-full'}>
+    <main class={'p-6 rounded bg-gray video-game-shadow max-w-[1024px] w-full overflow-auto'}>
       <section class={'mb-3'}>
         <h1 class={'text-center'}>
           mSupps Calculator and Optimizer
@@ -116,7 +116,7 @@ export function App() {
       </section>
       <section class={'my-4'}>
         <h4 class={'mb-1'}>Consumers</h4>
-        <div class={'grid grid-cols-4 gap-1'}>
+        <div class={'grid grid-cols-1 lg:grid-cols-4 gap-1'}>
           <input
             placeholder={'Name'}
             type="text"
@@ -140,25 +140,29 @@ export function App() {
         </div>
       </section>
       <section class={'my-4 bg-dark'}>
-        <div class={'consumers-header grid grid-cols-5 [&>h6]:text-center [&>h6]:p-2'} style={{paddingRight: consumers.length > 3 ? '11px' : ''}}>
-          <h6>Name</h6>
-          <h6>mSupps per hour</h6>
-          <h6>Inventory</h6>
-          <h6>Time until empty</h6>
-          <h6>Remove</h6>
-        </div>
-        <div class={'consumers-body h-[115px] overflow-x-hidden overflow-y-auto'} ref={consumerTableDataContainer}>
-          {consumers.map((consumer) => (
-            <div class={'grid grid-cols-5 items-center [&>span]:p-2 [&>*]:text-center'}>
-              <span>{consumer.name}</span>
-              <span>{consumer.mSuppsPerHour}</span>
-              <span>{consumer.inventory}</span>
-              <span>{floatToTime(consumer.timeUntilEmpty)}</span>
-              <div>
-                <button class={'btn btn-delete'} onClick={removeConsumer(consumer)}>X</button>
-              </div>
+        <div className="consumers-table-wrapper">
+          <div className="consumers-table-inner">
+            <div class={'consumers-header grid grid-cols-5 [&>h6]:text-center [&>h6]:p-2'} style={{paddingRight: consumers.length > 3 ? '11px' : ''}}>
+              <h6>Name</h6>
+              <h6>mSupps per hour</h6>
+              <h6>Inventory</h6>
+              <h6>Time until empty</h6>
+              <h6>Remove</h6>
             </div>
-          ))}
+            <div class={'consumers-body h-[115px] overflow-x-hidden overflow-y-auto'} ref={consumerTableDataContainer}>
+              {consumers.map((consumer) => (
+                <div class={'grid grid-cols-5 items-center [&>span]:p-2 [&>*]:text-center'}>
+                  <span>{consumer.name}</span>
+                  <span>{consumer.mSuppsPerHour}</span>
+                  <span>{consumer.inventory}</span>
+                  <span>{floatToTime(consumer.timeUntilEmpty)}</span>
+                  <div>
+                    <button class={'btn btn-delete'} onClick={removeConsumer(consumer)}>X</button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
       <section class={'my-4 calculation-type'}>
