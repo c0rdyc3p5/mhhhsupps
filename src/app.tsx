@@ -11,10 +11,21 @@ export function floatToTime(float: number) {
 }
 
 export function App() {
+  // Check if we have data in the url
+  const url = new URL(window.location.href);
+  const dataB64 = url.searchParams.get('data');
+  let data: any = null;
+  if (dataB64) {
+    data = JSON.parse(atob(dataB64));
+    // Remove data from url
+    url.searchParams.delete('data');
+    window.history.replaceState({}, '', url.toString());
+  }
+
   const [nameInput, setNameInput] = useState<string | ''>('');
   const [mSuppsPerHourInput, setMSuppsPerHourInput] = useState<number | ''>('');
   const [inventoryInput, setInventoryInput] = useState<number | ''>('');
-  const [consumers, setConsumers] = useState<Consumer[]>([]);
+  const [consumers, setConsumers] = useState<Consumer[]>(data?.consumers || []);
   const nameInputRef = useRef<HTMLInputElement>(null);
 
   const addConsumer = () => {
@@ -46,8 +57,8 @@ export function App() {
     }
   }
 
-  const [wantedRunHourInput, setWantedRunHourInput] = useState<number | ''>('');
-  const [mSuppsStockpileInput, setMSuppsStockpileInput] = useState<number | ''>('');
+  const [wantedRunHourInput, setWantedRunHourInput] = useState<number | ''>(data?.wantedRunHourInput || '');
+  const [mSuppsStockpileInput, setMSuppsStockpileInput] = useState<number | ''>(data?.mSuppsStockpileInput || '');
 
   const [resultDataTable, setResultDataTable] = useState<any>(null);
 
@@ -106,6 +117,20 @@ export function App() {
     consumerTableDataContainer.current && autoAnimate(consumerTableDataContainer.current)
     resultDataTableContainer.current && autoAnimate(resultDataTableContainer.current)
   }, [consumerTableDataContainer, resultDataTableContainer])
+
+  const [isShared, setIsShared] = useState<boolean>(false);
+  const shareStateToUrlClipBoard = (): void => {
+    const data = {
+      consumers,
+      wantedRunHourInput,
+      mSuppsStockpileInput
+    };
+
+    const url = new URL(window.location.href);
+    // Set data to url base64 encoded
+    url.searchParams.set('data', btoa(JSON.stringify(data)));
+    navigator.clipboard.writeText(url.toString()).then(() => setIsShared(true));
+  }
 
   return (
     <main class={'p-6 rounded bg-gray video-game-shadow max-w-[1024px] w-full overflow-auto'}>
@@ -201,6 +226,13 @@ export function App() {
       </section>
       <section ref={resultDataTableContainer}>
         {resultDataTable}
+        {resultDataTable &&
+          <div class={'grid place-content-center mt-4'}>
+            <button onClick={() => shareStateToUrlClipBoard()} class={'btn btn-primary mx-auto'}>
+              {!isShared ? 'Share' : 'Copied to clipboard'}
+            </button>
+          </div>
+        }
       </section>
     </main>
   )
